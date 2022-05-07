@@ -1,0 +1,25 @@
+---
+title: "Distributional consequences of climate policy"
+author: "Sophia Leiker"
+date: "5/7/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(here)
+library(tidyverse)
+library(broom)
+library(janitor)
+library(rootSolve)
+```
+
+```{r}
+#Reading in the data
+
+df <- read_csv(here("data", "HW3_data.csv")) %>% 
+  select(-1) %>% 
+  clean_names()
+```
+
