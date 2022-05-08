@@ -90,12 +90,12 @@ df2 <- df %>%
   mutate("supply" = (Qagg * slope_supply))
 
 ggplot(df, aes(Qagg, price)) +
-  geom_line() +
-  labs(title = "Supply and Demand Curves") +
-  geom_line(data = demand_table, aes(x = demand_low, y = price_cents)) +
-  geom_line(data = demand_table, aes(x = demand_high, y = price_cents)) +
+  geom_line(color = "forestgreen") +
+  labs(title = "Supply and Demand Curves", y = "Price (cents)", x = "Electricity Quantity (kWh)") +
+  geom_line(data = demand_table, aes(x = demand_low, y = price_cents), color = "blue", linetype = "dashed") +
+  geom_line(data = demand_table, aes(x = demand_high, y = price_cents), color = "purple", linetype = "dashed") +
   scale_x_continuous(limits = c(0, 9e+05)) +
-  geom_line(data = df2, aes(x = Qagg, y = supply))
+  geom_line(data = df2, aes(x = Qagg, y = supply), color = "orange")
 
 ```
 
