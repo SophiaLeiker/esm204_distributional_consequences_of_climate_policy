@@ -67,10 +67,9 @@ df<- tibble(Qagg = Qagg, price = price)
 ```{r}
 ggplot(df, aes(Qagg, price)) +
   geom_line() +
-  labs(title = "Aggregate Demand") +
+  labs(title = "Demand Curves") +
   geom_line(data = demand_table, aes(x = demand_low, y = price_cents)) +
   geom_line(data = demand_table, aes(x = demand_high, y = price_cents)) +
-  scale_color_manual(values = c("red", "blue", "forestgreen")) +
   scale_x_continuous(limits = c(0, 9e+05))
 
 ggplot(data = demand_table, aes(x = demand_low, y = price_cents)) +
@@ -81,6 +80,23 @@ ggplot(data = demand_table, aes(x = demand_high, y = price_cents)) +
   geom_point() +
     labs(title = "Demand High")
 ```
+
+```{r}
+#updating data frame to get supply curve
+
+df2 <- df %>% 
+  mutate("supply" = (Qagg * .1))
+
+ggplot(df, aes(Qagg, price)) +
+  geom_line() +
+  labs(title = "Demand Curves") +
+  geom_line(data = demand_table, aes(x = demand_low, y = price_cents)) +
+  geom_line(data = demand_table, aes(x = demand_high, y = price_cents)) +
+  scale_x_continuous(limits = c(0, 9e+05)) +
+  geom_line(data = df2, aes(x = Qagg, y = supply))
+
+```
+
 
 ```{r}
 # I also define functions for calculating the consumer surplus:
