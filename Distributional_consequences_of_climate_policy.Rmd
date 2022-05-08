@@ -84,18 +84,38 @@ ggplot(data = demand_table, aes(x = demand_high, y = price_cents)) +
 ```{r}
 #updating data frame to get supply curve
 
+slope_supply <- 10/536719.47
+
 df2 <- df %>% 
-  mutate("supply" = (Qagg * .1))
+  mutate("supply" = (Qagg * slope_supply))
 
 ggplot(df, aes(Qagg, price)) +
   geom_line() +
-  labs(title = "Demand Curves") +
+  labs(title = "Supply and Demand Curves") +
   geom_line(data = demand_table, aes(x = demand_low, y = price_cents)) +
   geom_line(data = demand_table, aes(x = demand_high, y = price_cents)) +
   scale_x_continuous(limits = c(0, 9e+05)) +
   geom_line(data = df2, aes(x = Qagg, y = supply))
 
 ```
+
+```{r}
+#updating data frame to get MSC
+
+df2 <- df2 %>% 
+  mutate("MEC" = (Qagg * 2))
+
+ggplot(df, aes(Qagg, price)) +
+  geom_line() +
+  labs(title = "Supply and Demand Curves") +
+  geom_line(data = demand_table, aes(x = demand_low, y = price_cents)) +
+  geom_line(data = demand_table, aes(x = demand_high, y = price_cents)) +
+  scale_x_continuous(limits = c(0, 9e+05)) +
+  geom_line(data = df2, aes(x = Qagg, y = supply)) +
+  geom_line(data = df2, aes(x = Qagg, y = MEC))
+
+```
+
 
 
 ```{r}
@@ -113,8 +133,26 @@ CS_agg <- function(p){
 }
 ```
 
+```{r}
+#Finding the consumer surplus at price 10
+
+CS(10, model_demand_l)
+
+CS(10, model_demand_h)
+
+CS_agg(10)
+
+#difference in consumer surplus between the high and low groups 
+consumer_surplus_diff <- CS(10, model_demand_h) - CS(10, model_demand_l)
+consumer_surplus_diff
+
+```
+
+
+######### END OF SANDY'S CODE HERE ##########
 
 ```{r}
+  #THIS IS LUCAS'S CODE
 # creating a table for demand based on the linear model
 
 mc <- function(p){
