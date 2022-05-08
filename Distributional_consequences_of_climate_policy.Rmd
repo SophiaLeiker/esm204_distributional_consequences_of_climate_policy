@@ -66,7 +66,20 @@ df<- tibble(Qagg = Qagg, price = price)
 
 ```{r}
 ggplot(df, aes(Qagg, price)) +
-  geom_line()
+  geom_line() +
+  labs(title = "Aggregate Demand") +
+  geom_line(data = demand_table, aes(x = demand_low, y = price_cents)) +
+  geom_line(data = demand_table, aes(x = demand_high, y = price_cents)) +
+  scale_color_manual(values = c("red", "blue", "forestgreen")) +
+  scale_x_continuous(limits = c(0, 9e+05))
+
+ggplot(data = demand_table, aes(x = demand_low, y = price_cents)) +
+  geom_point() +
+  labs(title = "Demand Low")
+
+ggplot(data = demand_table, aes(x = demand_high, y = price_cents)) +
+  geom_point() +
+    labs(title = "Demand High")
 ```
 
 ```{r}
