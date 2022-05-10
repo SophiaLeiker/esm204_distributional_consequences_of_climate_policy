@@ -87,7 +87,8 @@ ggplot(data = demand_table, aes(x = demand_high, y = price_cents)) +
 slope_supply <- 10/536719.47
 
 df2 <- df %>% 
-  mutate("supply" = (Qagg * slope_supply))
+  mutate("supply" = (Qagg * slope_supply)) %>% 
+  mutate("MEC" = 2)
 
 ggplot(df, aes(Qagg, price)) +
   geom_line(color = "forestgreen") +
@@ -95,28 +96,10 @@ ggplot(df, aes(Qagg, price)) +
   geom_line(data = demand_table, aes(x = demand_low, y = price_cents), color = "blue", linetype = "dashed") +
   geom_line(data = demand_table, aes(x = demand_high, y = price_cents), color = "purple", linetype = "dashed") +
   scale_x_continuous(limits = c(0, 9e+05)) +
-  geom_line(data = df2, aes(x = Qagg, y = supply), color = "orange")
+  geom_line(data = df2, aes(x = Qagg, y = supply), color = "orange") +
+  geom_line(data = df2, aes(x = Qagg, y = MEC), color = "red")
 
 ```
-
-```{r}
-#updating data frame to get MSC
-
-df2 <- df2 %>% 
-  mutate("MEC" = (Qagg * 2))
-
-ggplot(df, aes(Qagg, price)) +
-  geom_line() +
-  labs(title = "Supply and Demand Curves") +
-  geom_line(data = demand_table, aes(x = demand_low, y = price_cents)) +
-  geom_line(data = demand_table, aes(x = demand_high, y = price_cents)) +
-  scale_x_continuous(limits = c(0, 9e+05)) +
-  geom_line(data = df2, aes(x = Qagg, y = supply)) +
-  geom_line(data = df2, aes(x = Qagg, y = MEC))
-
-```
-
-
 
 ```{r}
 # I also define functions for calculating the consumer surplus:
@@ -148,35 +131,24 @@ consumer_surplus_diff
 
 ```
 
-
-######### END OF SANDY'S CODE HERE ##########
-
 ```{r}
-  #THIS IS LUCAS'S CODE
-# creating a table for demand based on the linear model
+#QUESTION 6
+#updating data to get the new high demand curve 
 
-mc <- function(p){
-  mc <- p*(demand_agg(10)/10)
-  return(mc)
-}
+df3 <- df %>% 
+  mutate("supply" = (Qagg * slope_supply)) %>% 
+  mutate("MEC" = 2)
 
-price_vector <- c(0:35)
-table <- data.frame(price_vector)
-demand_table <- table %>% 
-  mutate(demand_low = demand(price_vector, model = model_demand_l)) %>% 
-  mutate(demand_high = demand(price_vector, model = model_demand_h)) %>% 
-  mutate(demand_agg = demand_agg(price_vector)) %>% 
-  rename(price_cents = price_vector) %>% 
-  mutate(marginal_cost = mc(price_cents)) # marginal cost to produce
-
-demand_table_longer <- demand_table %>% 
-  pivot_longer(2:5, names_to = "demand_level", values_to = "demand")
-# plotting supply and demand
-ggplot(data = demand_table_longer, aes(x = demand, y = price_cents, color = demand_level)) +
-  geom_line(size = 1) +
-  theme_minimal(14) +
-  scale_color_manual(values = c("firebrick", "cyan4", "forestgreen", "black")) +
+ggplot(df, aes(Qagg, price)) +
+  geom_line(color = "forestgreen") +
+  labs(title = "Supply and Demand Curves", y = "Price (cents)", x = "Electricity Quantity (kWh)") +
+  geom_line(data = demand_table, aes(x = demand_low, y = price_cents), color = "blue", linetype = "dashed") +
+  geom_line(data = demand_table, aes(x = demand_high, y = price_cents), color = "purple", linetype = "dashed") +
   scale_x_continuous(limits = c(0, 9e+05)) +
-  theme(legend.position = c(0.8, 0.7))
+  geom_line(data = df2, aes(x = Qagg, y = supply), color = "orange") +
+  geom_line(data = df2, aes(x = Qagg, y = MEC), color = "red")
+
 ```
+```
+
 
