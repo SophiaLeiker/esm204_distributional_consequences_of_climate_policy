@@ -53,11 +53,32 @@ demand_agg <- function(p){
   q <- demand(p, model_demand_l) + demand(p, model_demand_h)
   return(q)
 }
+
+demand_agg2 <- function(p){
+  q <- demand(p, model_demand_l) + demand(p, model_demand_h2)
+  return(q)
+}
 ```
 
 ```{r}
 price = seq(0, 30, length.out = 100)
 Qagg <- map(price, demand_agg) %>% unlist()
+
+
+demand_agg2 <- function(p){
+  q <- demand(p, model_demand_l) + demand(p, model_demand_h2)
+  return(q)
+}
+
+df5 <- df %>% 
+  mutate(price_cents = price_cents * 0.5)
+
+model_demand_h2 <- lm(price_cents ~ q_high_kwh, data=df)
+
+Qagg2 <- map(price, demand_agg) %>% unlist()
+
+
+
 ```
 
 ```{r}
